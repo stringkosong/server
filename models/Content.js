@@ -14,7 +14,11 @@ const contentSchema = new Schema ({
         author: String,
         msg: String
     }],
-    tags: [{ type: String }]
+    tags: [{ type: String }],
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 },{ timestamps: true, versionKey: false })
 
 
