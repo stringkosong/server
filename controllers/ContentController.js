@@ -10,6 +10,7 @@ class ContentController {
             .catch(next)
     }
     static create(req,res,next) {
+        let userId = req.loggedUser._id
         let { file, author } = req.body
         let tags = []
         axiosTag({
@@ -28,7 +29,7 @@ class ContentController {
                 })
                 .then(({data})=>{   
                     let random = Math.floor(Math.random()*data.quotes.length)
-                    return  Content.create({ image: file ,quote:data.quotes[random].body, author, tags })
+                    return  Content.create({ image: file ,quote:data.quotes[random].body, author, tags, userId })
                     .then(data=>{
                         res.status(201).json(data)
                     })

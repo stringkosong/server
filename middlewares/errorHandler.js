@@ -1,5 +1,4 @@
 function errorHandler (err,req,res,next) {
-    // console.log(JSON.stringify(err, null, 2));
     if(err.name == "ValidationError") {
         let message = []
         for(let el in err.errors) {

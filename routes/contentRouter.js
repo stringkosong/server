@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const ContentController = require('../controllers/ContentController')
 const gcsUpload = require('../middlewares/gcs')
-
+const {authentication, authorization} = require('../middlewares/auth')
 
 const upload = gcsUpload({
   limits: {
@@ -14,7 +14,7 @@ const upload = gcsUpload({
 })
 
 router.get('/', ContentController.findAll)
-router.post('/', upload.single('file') , ContentController.create)
+router.post('/', authentication, upload.single('file') , ContentController.create)
 
 
 
