@@ -1,4 +1,5 @@
 function errorHandler (err,req,res,next) {
+    // console.log(JSON.stringify(err, null, 2));
     if(err.name == "ValidationError") {
         let message = []
         for(let el in err.errors) {
@@ -9,6 +10,7 @@ function errorHandler (err,req,res,next) {
         res.status(400).json({message:'email is already been used'})
     }
     else {
+        console.log(err);
         let status = err.status || 500
         let message = err.msg || 'internal server error'
         res.status(status).json({message})

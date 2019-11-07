@@ -13,9 +13,9 @@ const contentSchema = new Schema ({
     comments: [{
         author: String,
         msg: String
-    }]
+    }],
+    tags: [{ type: String }]
 },{ timestamps: true, versionKey: false })
-
 
 
 const Content = model('Content',contentSchema)

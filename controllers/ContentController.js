@@ -10,8 +10,9 @@ class ContentController {
             .catch(next)
     }
     static create(req,res,next) {
-        let { image,quote } = req.body
-        Content.create({ image,quote })
+        let { file, quote, author } = req.body
+        console.log(req.body);
+        Content.create({ image: file ,quote, author })
             .then(data=>{
                 res.status(201).json(data)
             })
