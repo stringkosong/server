@@ -15,7 +15,7 @@ const upload = gcsUpload({
 
 router.get('/', ContentController.findAll)
 router.post('/', authentication, upload.single('file') , ContentController.create)
-
+router.patch('/:id', authentication, ContentController.comment)
 
 
 module.exports = router

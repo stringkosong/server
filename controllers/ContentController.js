@@ -37,6 +37,16 @@ class ContentController {
                 })
             })
     }
+    static comment(req,res,next) {
+        let { id } = req.params
+        let { msg } = req.body
+        let author = req.loggedUser.name
+        Content.updateOne({_id:id},{$push : { comments : {author,msg} }})
+            .then(data=>{
+                res.status(201).json({message: 'comment added'})
+            })
+            .catch(next)
+    }
 }
 
 module.exports = ContentController
