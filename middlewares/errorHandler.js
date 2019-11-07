@@ -1,0 +1,20 @@
+function errorHandler (err,req,res,next) {
+    // console.log(JSON.stringify(err, null, 2));
+    if(err.name == "ValidationError") {
+        let message = []
+        for(let el in err.errors) {
+            message.push(err.errors[el].message)
+        }
+        res.status(400).json({message})
+    } else if (err.name == "MongoError" && err.code == 11000) {
+        res.status(400).json({message:'email is already been used'})
+    }
+    else {
+        console.log(err);
+        let status = err.status || 500
+        let message = err.msg || 'internal server error'
+        res.status(status).json({message})
+    }
+}
+
+module.exports = errorHandler
