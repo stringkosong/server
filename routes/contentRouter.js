@@ -8,14 +8,17 @@ const upload = gcsUpload({
     fileSize: 2e6
   },
   gcsConfig: {
-    keyFilename: './keyfile.json',
-    bucketName: 'qmage'
+    keyFilename: process.env.KEYFILE_PATH,
+    bucketName: process.env.BUCKET_NAME
   }
 })
 
+router.use(authentication)
 router.get('/', ContentController.findAll)
-router.post('/', authentication, upload.single('file') , ContentController.create)
-router.patch('/:id', authentication, ContentController.comment)
+router.get('/:id', ContentController.findOne)
+router.post('/', upload.single('file') , ContentController.create)
+router.patch('/:id', ContentController.comment)
+router.delete('/:id',authorization,ContentController.delete)
 
 
 module.exports = router

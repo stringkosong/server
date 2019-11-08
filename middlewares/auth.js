@@ -27,7 +27,7 @@ function authorization(req,res,next) {
     let {id} = req.params
     Content.findOne({_id:id})
     .then(result=>{
-        if(result && result.author == req.loggedUser._id) {
+        if(result && result.userId == req.loggedUser._id) {
             next()
         } else {
             next({status: 401,msg: "not authorized"})

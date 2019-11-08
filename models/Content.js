@@ -1,9 +1,6 @@
 const { Schema, model } = require('mongoose')
 
 const contentSchema = new Schema ({
-    author: {
-        type: String
-    },
     image: {
         type: String
     },
