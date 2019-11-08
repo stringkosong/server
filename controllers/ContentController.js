@@ -58,7 +58,8 @@ class ContentController {
     }
     static findOne(req,res,next) {
         let { id } = req.params
-        Content.findById(id).populate('userId')
+
+        Content.findById(id).populate('userId
             .then(data=>{
                 res.json(data)
             })
