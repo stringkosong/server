@@ -5,18 +5,8 @@ const Content = require('../models/Content')
 function authentication(req,res,next) {
     try {
         let decodedToken = verifyToken(req.headers.token)
-        
-        User.findOne({_id:decodedToken._id})
-        .then(user=>{
-            
-            if(user) {
-                req.loggedUser = decodedToken
-                next()
-            } else {
-                next({status:401, msg:'authentication failed'})
-            }
-        })
-        .catch(next)
+        req.loggedUser = decodedToken
+        next()    
     }
     catch (err) {
         next({status:403, msg:'you must login first'})

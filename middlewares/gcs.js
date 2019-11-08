@@ -4,7 +4,6 @@ const uploadToGcs = require('./gcsUpload')
 module.exports = ({ limits, gcsConfig }) => {
   const multerStorage = multer.memoryStorage()
   const upload = multer({ storage: multerStorage, limits })
-  // console.log('MASUK GCS')
 
   return {
     single: (fieldname) => [
