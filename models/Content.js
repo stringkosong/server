@@ -1,9 +1,6 @@
 const { Schema, model } = require('mongoose')
 
 const contentSchema = new Schema ({
-    author: {
-        type: String
-    },
     image: {
         type: String
     },
@@ -14,7 +11,11 @@ const contentSchema = new Schema ({
         author: String,
         msg: String
     }],
-    tags: [{ type: String }]
+    tags: [{ type: String }],
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 },{ timestamps: true, versionKey: false })
 
 
