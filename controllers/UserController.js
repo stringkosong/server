@@ -18,7 +18,7 @@ class UserController {
             if(user && comparePassword(password,user.password)) {
                 let payload = {name:user.name,email:user.email,_id:user._id}
                 let token = generateToken(payload)
-                res.status(201).json({token,name:user.name,_id:user._id,email:user.email})
+                res.status(201).json({token,name:user.name,_id:user._id,email:user.email, message: 'Login success'})
             } else {
                 next({status:401,msg:'invalid email/password'})
             }
