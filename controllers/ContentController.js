@@ -1,9 +1,18 @@
 const Content = require('../models/Content')
 const { axiosQuote,axiosTag } = require('../config/apis')
+const { Storage } = require('@google-cloud/storage')
 
 class ContentController {
     static findAll(req,res,next) {
-        Content.find()
+        const { type, tag } = req.query
+        let objParams = {}
+        if (type === 'mypost') {
+            objParams.userId = req.loggedUser._id
+        } else if (tag) {
+            objParams.tags = tag
+        }
+        Content.find(objParams)
+            .populate('userId')
             .then(data=>{
                 res.json(data)
             })
@@ -11,7 +20,7 @@ class ContentController {
     }
     static create(req,res,next) {
         let userId = req.loggedUser._id
-        let { file, author } = req.body
+        let { file } = req.body
         let tags = []
         axiosTag({
             method: 'get',
@@ -29,7 +38,7 @@ class ContentController {
                 })
                 .then(({data})=>{   
                     let random = Math.floor(Math.random()*data.quotes.length)
-                    return  Content.create({ image: file ,quote:data.quotes[random].body, author, tags, userId })
+                    return  Content.create({ image: file ,quote:data.quotes[random].body, tags, userId })
                     .then(data=>{
                         res.status(201).json(data)
                     })
@@ -44,6 +53,35 @@ class ContentController {
         Content.updateOne({_id:id},{$push : { comments : {author,msg} }})
             .then(data=>{
                 res.status(201).json({message: 'comment added'})
+            })
+            .catch(next)
+    }
+    static findOne(req,res,next) {
+        let { id } = req.params
+        Content.findById(id)
+            .then(data=>{
+                res.json(data)
+            })
+            .catch(next)
+
+    }
+    static delete(req,res,next) {
+        let { id } = req.params
+        Content.findOneAndDelete({_id:id})
+            .then(data=>{
+                const bucket = process.env.BUCKET_NAME
+                
+                const storage = new Storage({
+                    keyFilename: process.env.KEYFILE_PATH,
+                    projectId: process.env.PROJECT_ID
+                })
+                let image = data.image
+                let filename = image.replace(/(https:\/\/storage.googleapis.com\/qmage\/)/, '')
+                console.log(filename,'filllllleeeeeeeeeeeee');
+                console.log(bucket,'buckettttttt');
+                
+                storage.bucket(bucket).file(filename).delete()
+                res.status(200).json({message:'delete success'})
             })
             .catch(next)
     }
