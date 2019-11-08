@@ -40,7 +40,7 @@ class ContentController {
                     let random = Math.floor(Math.random()*data.quotes.length)
                     return  Content.create({ image: file ,quote:data.quotes[random].body, tags, userId })
                     .then(data=>{
-                        res.status(201).json(data)
+                        res.status(201).json({ data,  message: 'Upload Success'})
                     })
                     .catch(next)
                 })
